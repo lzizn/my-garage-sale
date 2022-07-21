@@ -1,9 +1,21 @@
 import { useTypedMutation, useTypedQuery } from "../urql";
 
+import { ProductCard } from '../modules/Products/Card'
+import styled from 'styled-components';
+
 interface ArticleForm {
   title: string;
   url: string;
 }
+
+const Background = styled.main`
+  width: 100%;
+  min-height: 100vh;
+
+  background-color: #fff;
+  
+  padding: 1rem;
+`
 
 export function List() {
   const [articles] = useTypedQuery({
@@ -40,28 +52,14 @@ export function List() {
   }
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h2>Articles</h2>
-      <h3>Submit</h3>
-      <form
-        onSubmit={handleCreateArticle}
-      >
-        <input name="title" placeholder="title" />
-        <input name="url" placeholder="url" />
-        <button type="submit">Submit</button>
-      </form>
-      <h3>Latest</h3>
+    <Background>
       <ol>
         {articles.data?.articles.map(article => (
           <li>
-            <div>
-              <div>
-                {article.title} - <a href={article.url}>{article.url}</a>
-              </div>
-            </div>
+            <ProductCard title={article.title} key={article.id} />
           </li>
         ))}
       </ol>
-    </div>
+    </Background>
   );
 }
